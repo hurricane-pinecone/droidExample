@@ -8,21 +8,21 @@ namespace testGraphQL
     {
         static void Main(string[] args)
         {
-            var schema = Schema.For(@"
-              type Query {
-                hello: String
-              }
+            var schema = new Schema {
+                Query = new TestQuery()
+            };
 
-                type Query {
-                    
-                }
-            ");
-
-            var root = new { Hello = "Hello World!" };
             var json = schema.Execute(_ =>
             {
-                _.Query = "{ hello }";
-                _.Root = root;
+                _.OperationName = "MyTestQuery";
+                _.Query = @"
+query MyTestQuery {
+    hero {
+        id
+        name
+    }
+}
+";
             });
 
             Console.WriteLine(json);
